@@ -1,0 +1,5 @@
+# Created at 2023-07-23T09:14:29.731
+Boot Manifest-JAR contains absolute paths in classpath 'F:\PROJECTS\Web\React\co225_project\e19-co225-sharedspaces\backEnd\SharedSpaces\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+

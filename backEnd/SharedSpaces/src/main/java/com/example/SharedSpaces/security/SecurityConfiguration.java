@@ -17,53 +17,63 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    // get the jwtfilter
-    private final JwtAuthenticationFilter jwtAuthFilter;
+        // get the jwtfilter
+        private final JwtAuthenticationFilter jwtAuthFilter;
 
-    @Autowired
-    public SecurityConfiguration(JwtAuthenticationFilter jwtAuthFilter) {
-        this.jwtAuthFilter = jwtAuthFilter;
-    }
+        @Autowired
+        public SecurityConfiguration(JwtAuthenticationFilter jwtAuthFilter) {
+                this.jwtAuthFilter = jwtAuthFilter;
+        }
 
-    // Configure the security filter chain.
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .cors(AbstractHttpConfigurer::disable) // Disable CORS (Cross-Origin Resource Sharing) protection.
-                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF (Cross-Site Request Forgery) protection.
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/reservation", "/waiting/slot", "reservation/user",
-                                "reservation/responsible", "waiting/user")
-                        .permitAll() // Allow GET
-                        // requests to
-                        // these URLs
-                        // without
-                        // authentication.
-                        .requestMatchers(
-                                "/log",
-                                "/space",
-                                "/responsible",
-                                "/v2/api-docs",
-                                "/v3/api-docs",
-                                "/v3/api-docs/**",
-                                "/swagger-resources",
-                                "/swagger-resources/**",
-                                "/configuration/ui",
-                                "/configuration/security",
-                                "/swagger-ui/**",
-                                "/webjars/**",
-                                "/swagger-ui.html")
-                        .permitAll()
-                        .anyRequest().authenticated()) // Require authentication for all other requests.
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Use stateless
-                                                                                                        // sessions.
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Add the JWT
-                                                                                             // authentication filter
-                                                                                             // before the
-                                                                                             // username/password
-                                                                                             // authentication filter.
+        // Configure the security filter chain.
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .cors(AbstractHttpConfigurer::disable) // Disable CORS (Cross-Origin Resource Sharing)
+                                                                       // protection.
+                                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF (Cross-Site Request Forgery)
+                                                                       // protection.
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers(HttpMethod.GET, "/reservation", "/waiting/slot",
+                                                                "reservation/user",
+                                                                "reservation/responsible", "waiting/user")
+                                                .permitAll() // Allow GET
+                                                // requests to
+                                                // these URLs
+                                                // without
+                                                // authentication.
+                                                .requestMatchers(
+                                                                "/**",
+                                                                "/log",
+                                                                "/space",
+                                                                "/responsible",
+                                                                "/v2/api-docs",
+                                                                "/v3/api-docs",
+                                                                "/v3/api-docs/**",
+                                                                "/swagger-resources",
+                                                                "/swagger-resources/**",
+                                                                "/configuration/ui",
+                                                                "/configuration/security",
+                                                                "/swagger-ui/**",
+                                                                "/webjars/**",
+                                                                "/swagger-ui.html")
+                                                .permitAll()
+                                                .anyRequest().authenticated()) // Require authentication for all other
+                                                                               // requests.
+                                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Use
+                                                                                                                        // stateless
+                                                                                                                        // sessions.
+                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Add the
+                                                                                                             // JWT
+                                                                                                             // authentication
+                                                                                                             // filter
+                                                                                                             // before
+                                                                                                             // the
+                                                                                                             // username/password
+                                                                                                             // authentication
+                                                                                                             // filter.
 
-        return http.build(); // Build and return the security filter chain.
-    }
+                return http.build(); // Build and return the security filter chain.
+        }
 
 }
