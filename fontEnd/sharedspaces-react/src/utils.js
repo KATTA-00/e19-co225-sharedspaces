@@ -123,5 +123,4 @@ export function checkUser(setUser, setValid, handleLogout) {
     }
   }
   setValid(true);
-  setUser(user);
 }
